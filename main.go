@@ -5,12 +5,9 @@ import "net/http"
 func main() {
 	mux := http.NewServeMux()
 
-	server := &http.Server{
-        Addr:    ":8080",
-        Handler: mux,
-    }
+	mux.Handle("/", http.FileServer(http.Dir(".")))
 
-	err := server.ListenAndServe()
+	err := http.ListenAndServe(":8080", mux)
     if err != nil {
         panic(err)
     }
