@@ -13,6 +13,7 @@ type apiConfig struct {
 	fileserverHits int
 	DB             *database.DB
 	jwtSecret      string
+	polkaSecret    string
 }
 
 func main() {
@@ -29,6 +30,7 @@ func main() {
 		fileserverHits: 0,
 		DB:             db,
 		jwtSecret:      os.Getenv("JWT_SECRET"),
+		polkaSecret:    os.Getenv("POLKA_SECRET"),
 	}
 
 	mux := http.NewServeMux()
@@ -50,7 +52,6 @@ func main() {
 	mux.HandleFunc("PUT /api/users", apiCfg.handlerUsersUpdate)
 
 	mux.HandleFunc("POST /api/polka/webhooks", apiCfg.handlerPolkaWebhooks)
-
 
 	srv := &http.Server{
 		Addr:    ":" + port,
