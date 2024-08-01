@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/alikrugl/go-web-server/internal/database"
+	"github.com/joho/godotenv"
 )
 
 type apiConfig struct {
@@ -21,6 +22,7 @@ func main() {
 		log.Fatal(err)
 	}
 
+	godotenv.Load()
 	apiCfg := apiConfig{
 		fileserverHits: 0,
 		DB:             db,
@@ -37,7 +39,6 @@ func main() {
 
 	mux.HandleFunc("POST /api/users", apiCfg.handlerUsersCreate)
 	mux.HandleFunc("POST /api/login", apiCfg.handlerUserLogin)
-
 
 	srv := &http.Server{
 		Addr:    ":" + port,
