@@ -2,7 +2,6 @@ package main
 
 import (
 	"net/http"
-	"sort"
 )
 
 func (cfg *apiConfig) handlerChirpsRetrieve(w http.ResponseWriter, r *http.Request) {
@@ -20,9 +19,9 @@ func (cfg *apiConfig) handlerChirpsRetrieve(w http.ResponseWriter, r *http.Reque
 		})
 	}
 
-	sort.Slice(chirps, func(i, j int) bool {
-		return chirps[i].ID < chirps[j].ID
-	})
+	// sort.Slice(chirps, func(i, j int) bool {
+	// 	return chirps[i].ID < chirps[j].ID
+	// })
 
 	respondWithJSON(w, http.StatusOK, chirps)
 }

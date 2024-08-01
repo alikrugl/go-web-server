@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"github.com/alikrugl/go-web-server/internal/database"
 )
 
 type apiConfig struct {
