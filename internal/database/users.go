@@ -3,9 +3,10 @@ package database
 import "golang.org/x/crypto/bcrypt"
 
 type User struct {
-	ID       int    `json:"id"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	ID          int    `json:"id"`
+	Email       string `json:"email"`
+	Password    string `json:"password"`
+	IsChirpyRed bool   `json:"is_chirpy_red"`
 }
 
 func (db *DB) CreateUser(email, password string) (User, error) {
@@ -73,6 +74,28 @@ func (db *DB) UpdateUser(id int, email, password string) (User, error) {
 
 	user.Email = email
 	user.Password = password
+	dbStructure.Users[id] = user
+
+	err = db.writeDB(dbStructure)
+	if err != nil {
+		return User{}, err
+	}
+
+	return user, nil
+}
+
+func (db *DB) UpdateMembershipUser(id int) (User, error) {
+	dbStructure, err := db.loadDB()
+	if err != nil {
+		return User{}, err
+	}
+
+	user, ok := dbStructure.Users[id]
+	if !ok {
+		return User{}, ErrNotExist
+	}
+
+	user.IsChirpyRed = true
 	dbStructure.Users[id] = user
 
 	err = db.writeDB(dbStructure)
