@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"sort"
 	"strconv"
 )
 
@@ -19,6 +20,17 @@ func (cfg *apiConfig) handlerChirpsRetrieve(w http.ResponseWriter, r *http.Reque
 			ID:       dbChirp.ID,
 			Body:     dbChirp.Body,
 			AuthorID: dbChirp.AuthorID,
+		})
+	}
+
+	sortParam := r.URL.Query().Get("sort")
+	if sortParam == "asc" {
+		sort.Slice(chirps, func(i, j int) bool {
+			return chirps[i].ID < chirps[j].ID
+		})
+	} else if sortParam == "desc" {
+		sort.Slice(chirps, func(i, j int) bool {
+			return chirps[i].ID > chirps[j].ID
 		})
 	}
 
