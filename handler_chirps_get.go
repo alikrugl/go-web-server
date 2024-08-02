@@ -6,7 +6,8 @@ import (
 )
 
 func (cfg *apiConfig) handlerChirpsRetrieve(w http.ResponseWriter, r *http.Request) {
-	dbChirps, err := cfg.DB.GetChirps()
+	chirpID, _ := strconv.Atoi(r.URL.Query().Get("author_id"))
+	dbChirps, err := cfg.DB.GetChirps(chirpID)
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, "Couldn't retrieve chirps")
 		return
